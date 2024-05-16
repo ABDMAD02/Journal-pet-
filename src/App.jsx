@@ -7,6 +7,7 @@ import Header from './components/Header/Header';
 import JournalList from './components/JournalList/JournalList';
 import JournalAddButton from './components/JournalAddButton/JournalAddButton';
 import Body from './layouts/Body/Body';
+import { useState } from 'react';
 
 
 export default function App(){
@@ -29,6 +30,12 @@ export default function App(){
     }
   ];
 
+  const [inputData, setInputData] = useState('');
+
+  const inputChange = (event) => {
+    setInputData(event.target.value);
+  };
+  
   return (
     <div className='app'>
     
@@ -53,7 +60,7 @@ export default function App(){
       </JournalList>
     </LeftPanel>
     <Body>
-      Body 
+      <input type="text" value={inputData} onChange={inputChange}/>
     </Body>
     </div>
    );
