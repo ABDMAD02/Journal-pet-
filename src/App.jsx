@@ -7,7 +7,7 @@ import JournalList from './components/JournalList/JournalList';
 import JournalAddButton from './components/JournalAddButton/JournalAddButton';
 import Body from './layouts/Body/Body';
 import JournalForm from './components/JournalForm/JournalForm';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const INITIAL_DATA = [
   // {
@@ -34,6 +34,16 @@ const INITIAL_DATA = [
 export function App(){
 
   const [items, setItems] = useState(INITIAL_DATA);
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem('data'));
+    if (data) {
+      setItems(data.map(item => ({
+        ...item,
+        date: new Date(item.date)
+      })));
+    }
+  });
 
   const addItem = item => {
     setItems(oldItems => [...oldItems, {
