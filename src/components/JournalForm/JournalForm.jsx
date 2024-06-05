@@ -1,15 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../Button/Button';
 import styles from './JournalForm.module.css';
 import cn from 'classnames';
 
+const INITIAL_STATE = {
+    title: true,
+    date: true,
+    text: true
+};
+
 function JournalForm ({onSubmit}) {
 
-    const [formValidState, setFormValidState] = useState({
-        title: true,
-        text: true,
-        date:true 
-    });
+    const [formValidState, setFormValidState] = useState(INITIAL_STATE);
+
+    useEffect(() => {
+
+        if(!formValidState.date || !formValidState.title || !formValidState.text)
+            setTimeout(() => {
+                setFormValidState(INITIAL_STATE);
+            }, 700);
+    }, [formValidState]);
 
     const addJournalItem = (e) => {
         e.preventDefault();
@@ -41,7 +51,6 @@ function JournalForm ({onSubmit}) {
             return;
         }
         onSubmit(formProps);
-        
     };
 
     return (
@@ -65,7 +74,8 @@ function JournalForm ({onSubmit}) {
                     <img src="/tag.svg" alt="tag"/>
                     <span> Tag </span>
                 </label>
-                <input type="text" name='tag' id='tag' className={styles['input']}/>
+                <input type="text" name='tag' id='tag' className={cn(styles['input'], {
+                [styles['invalid']] : !formValidState.date })}/>
                 </div>
             <textarea name="text" id="" cols="30" rows="10" className={cn(styles['input'], {
                 [styles['invalid']] : !formValidState.text })}>
